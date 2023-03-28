@@ -1,12 +1,11 @@
-import { openModal, showData } from "../functions/index.js";
+import { openModal, showData, showResidentsOnModal } from "../functions/index.js";
 import { getCharacters } from "../api/index.js";
 
 
-//variables
-let i = 1 //-> page iterator ( infinite scroll )
+// variables
+let i = 1;
 
-
-
+// observer function
 export function observerFunction() {
     let options = {
         rootMargin: '100px 0px 0px 0px',
@@ -28,12 +27,12 @@ export function observerFunction() {
 }
 
 // mutation observer
-export function mutationObserver(){
+export function mutationObserver() {
     const observer = new MutationObserver((mutations) => {
-        if(mutations){
+        if (mutations) {
             const allImages = document.querySelectorAll(".character")
             openModal(allImages)
         }
     })
-    observer.observe(app, {childList: true})
+    observer.observe(app, { childList: true })
 }

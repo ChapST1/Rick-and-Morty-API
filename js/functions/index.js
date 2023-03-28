@@ -1,4 +1,4 @@
-import { modal } from "../constants/index.js"
+import { buttonFullScreen, modal } from "../constants/index.js"
 import { API_URL } from "../api/config/index.js"
 
 import { app } from "../constants/index.js"
@@ -17,23 +17,28 @@ export function showData(arr) {
 export function openModal(allImages) {
     allImages.forEach((img) => {
         img.addEventListener('click', async () => {
-            modal.classList.add('modal-open');
             document.body.style.overflowY = 'hidden';
+            modal.classList.add('modal-open');
+
             const id = img.getAttribute("id");
             const url = `${API_URL}/${id}`
+
             addLoader(modal.firstElementChild)
+
+
             const findCharacter = await getCharacter(url);
             showDataModal(findCharacter);
+
             // add residents
             addLoader(document.querySelector(".description__residents"))
             const getLocation = await getCharacter(findCharacter.location.url)
-            
-            const residents = getResidents(getLocation.residents);
-        
+
+            const residents = getResidents(getLocation.residents)
+
             setTimeout(() => {
-                showResidentsOnModal(residents)
+                showResidentsOnModal(residents.slice(0, 10))
             }, 4000)
-            
+
         })
     })
 }
@@ -85,11 +90,9 @@ export function showResidentsOnModal(arr) {
     arr.map((resident) => {
         return residentsContainer.innerHTML += `
         <img class="character" id="${resident.id}" loading="lazy" src="${resident.image}" >
-        `;
+ `;
     })
     descriptionElement.appendChild(residentsContainer)
-
-    //console.log(residentsContainer.childNodes);
     openModal(document.querySelectorAll(".character"))
 }
 
@@ -102,7 +105,7 @@ export function disableModal() {
     clearData(modal.firstElementChild)
 }
 
-export function handleError(){
+export function handleError() {
     const errorGif = [
         "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWY2MWUzOTMwYmFjMjk4ZmViNGMwNjRhNGU0Mzg1YjRkODRmNjkwOCZjdD1n/l41JMXnXn4E7WQR8s/giphy.gif",
         "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2RmMGExYWI1OTRmOGJmNzA2ZmEyZDk4NGYwNThjZjEwNWM5MDFmNCZjdD1n/cOKjNdJDbqNCm4n0Jm/giphy.gif",
@@ -120,4 +123,17 @@ export function handleError(){
         <img class="error__img" src="${getRandomGif}" alt="error gif"></video>
     </div>
     `
+}
+
+export function enableFullScreen() {
+    buttonFullScreen.addEventListener('click', () => {
+        document.documentElement.requestFullscreen()
+        buttonFullScreen.innerHTML = "Exit Full Screen"
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+            buttonFullScreen.innerHTML = "Full Screen"
+        }
+
+    })
 }
