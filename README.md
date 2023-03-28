@@ -1,5 +1,5 @@
 # **Rick and Morty API**
-[Ver demo → ](https://chapst1.github.io/Buho-caso-3/)
+[Ver demo → ](https://chapst1.github.io/Rick-and-Morty-API/)
 
 ![Primer Diseno](./screenshots/1.png)
 
